@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Board Game</title>
+    <style>
+      @keyframes move {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(20px); }
+        100% { transform: translateX(0); }
+      }
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      h1 {
+        font-size: 72px;
+        color: red;
+        text-shadow: 4px 4px black;
+      }
+      h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+      .levels {
+        display: flex;
+        justify-content: center;
+      }
+      button {
+        font-size: 20px;
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 5px;
+        background-color: #4CAF50; /* Green */
+        color: white;
+        animation: move 2s linear infinite;
+      }
+      button:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Board Game</h1>
+    <h2>Select Level</h2>
+    <div class="levels">
+      <button onclick="selectLevel('board1')">Beginner</button>
+      <button onclick="selectLevel('board2')">Medium</button>
+      <button onclick="selectLevel('board3')">Master</button>
+    </div>
+
+    <script>
+      function selectLevel(level) {
+        // Redirect to the corresponding HTML page for the selected level
+        window.location.href = `${level}.html`;
+      }
+    </script>
+  </body>
+</html>
