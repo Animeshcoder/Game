@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tic Tac Toe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+          }
+          
+          #game-board {
+            width: 420px;
+            height: 420px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+          }
+          
+          .cell {
+            width: 140px;
+            height: 140px;
+            border: 2px solid #7c7171;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          
+          .cell:hover {
+            cursor: pointer;
+          }
+          
+          .cell.x {
+            background-color: rgb(161, 255, 191);
+          }
+          
+          .cell.o {
+            background-color: rgb(255, 176, 176);
+          }
+          
+    </style>
+  </head>
+  <body>
+    <h1>Tic Tac Toe</h1>
+    <div id="game-board">
+    </div>
+    <script>
+        const gameBoard = document.querySelector('#game-board');
+      
+        for (let i = 0; i < 9; i++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          gameBoard.appendChild(cell);
+        }
+        /*Above code is same as below one. 
+        let cellsHTML = '';
+        for (let i = 0; i < 9; i++) {
+        cellsHTML += '<div class="cell"></div>';
+        }
+        gameBoard.innerHTML = cellsHTML;*/
+      
+        const cells = document.querySelectorAll('.cell');
+        let currentPlayer = 'x';
+      
+        cells.forEach(cell => {
+          cell.addEventListener('click', handleCellClick);
+        });
+      
+        function handleCellClick(event) {
+        //Accessing the clicked cell by player.
+          const cell = event.target;
+          cell.textContent = currentPlayer;
+        //adds a class to the cell to indicate which player has claimed it 
+          cell.classList.add(currentPlayer); 
+        //removes the event listener from the cell so that it can’t be clicked again 
+          cell.removeEventListener('click', handleCellClick);
+        
+          if (checkWin(currentPlayer)) {
+            alert(`${currentPlayer} wins!`);
+            resetGame();
+          } else if (checkDraw()) {
+            alert(`It's a draw!`);
+            resetGame();
+          } else {
+            currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+          }
+        }
+      
+        function checkWin(player) {
+          const winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+          ];
+      
+          return winningCombinations.some(combination => {
+            return combination.every(index => {
+              return cells[index].classList.contains(player);
+            });
+          });
+        }
+            /*Another version for above function return statement. 
+            for (let combination of winningCombinations) {
+            let hasWon = true;
+            for (let index of combination) {
+            if (!cells[index].classList.contains(player)) {
+                hasWon = false;
+                break;
+            }
+            }
+            if (hasWon) {
+            return true;
+            }
+            }
+            
+            return false;
+            */
+      
+        function checkDraw() {
+          return [...cells].every(cell => {
+            return cell.classList.contains('x') || cell.classList.contains('o');
+          });
+        }
+      
+        function resetGame() {
+          window.location.href = 'gameover.html';
+
+        }
+      </script>
+      
+  </body>
+</html>
+

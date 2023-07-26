@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Word Guessing Game</title>
+    <style>
+      #word {
+        font-size: 50px;
+        font-weight: bold;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: lightblue;
+      }
+      
+      button {
+        background-color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      button:hover {
+        background-color: lightgray;
+      }
+      
+      #box {
+        width: 600px;
+        height: 400px;
+        border: 10px solid black;
+        font-size: 24px;
+        text-align: center;
+      }
+      
+      #box span {
+        display: inline-block;
+        width: calc(100% / 4);
+      }
+      
+      #box span:nth-child(1) {
+        color: red;
+        font-size: 50px;
+        font-weight: 800;
+      }
+      
+      #box span:nth-child(2) {
+        color: orange;
+        font-size: 50px;
+        font-weight: 800;
+      }
+      
+      #box span:nth-child(3) {
+        color: yellow;
+        font-size: 50px;
+        font-weight: 800;
+
+      }
+      
+      #box span:nth-child(4) {
+        color: green;
+        font-size: 50px;
+        font-weight: 800;
+      }
+      
+      #box span:nth-child(5) {
+        color: blue;
+        font-size: 50px;
+        font-weight: 800;
+      }
+      
+      #box span:nth-child(6) {
+        color: indigo;
+        font-size: 50px;
+        font-weight: 800;
+      }
+      
+      #box span:nth-child(7) {
+        color: violet;
+        font-size: 50px;
+        font-weight: 800;
+      }
+      #box span:nth-child(8) {
+        color: rgb(95, 20, 74);
+        font-size: 50px;
+        font-weight: 800;
+      }
+      
+      
+    </style>
+  </head>
+  <body>
+    <h1>Word Guessing Game</h1>
+    <h3>Hint: Computer and Programming related word of 4 letter</h3>
+    <div id="box"></div>
+    <div id="word"></div>
+    <form id="form">
+      <label for="guess">Enter your guess:</label>
+      <!-- You cannot use the id attribute in place of the for attribute in a label element. The id and for attributes serve different purposes and are not interchangeable.
+
+The id attribute is used to specify a unique identifier for an HTML element. This identifier can be used to style the element using CSS or to manipulate it using JavaScript. The id attribute should be unique within the HTML document, meaning that no two elements should have the same id value.
+
+The for attribute, on the other hand, is used specifically in label elements to associate the label with a form control. The value of the for attribute should be the same as the id attribute of the form control that the label is associated with. -->
+      <input type="text" id="guess" maxlength="1" />
+      <button type="submit">Guess</button>
+    </form>
+    <button id="play">Play Again</button>
+    <script>
+      const words = ['game', 'play', 'data','user', 'cell', 'disk', 'tech', 'labs','pass','tool','ipad', 'file', 'loop', 'type', 'hack', 'wifi','host', 'root', 'dbms', 'site','java','case','char','else','enum','goto','list','long','void','auto','bool', 'this','true','null','args','byte' , 'code','eval', 'hash', 'heap' , 'join', 'pipe', 'push', 'sort'];
+      const loseMessage = 'YOU LOST';
+      let word = null;
+      let correctGuesses = [];
+      let wrongGuesses = 0;
+
+      const boxElement = document.getElementById('box');
+      const wordElement = document.getElementById('word');
+      const formElement = document.getElementById('form');
+      const guessElement = document.getElementById('guess');
+      const playElement = document.getElementById('play');
+
+      formElement.addEventListener('submit', (event) => {
+      //above line is same as formElement.onclick = (event) => {
+        event.preventDefault();
+        //preventDefault method prevents the default behavior of the submit event, which is to submit the form data to a server and reload the page. By calling this method, we prevent the page from reloading and instead handle the form submission using JavaScript.
+        const guess = guessElement.value;
+        if (guess) {
+          if (word.includes(guess)) {
+            correctGuesses.push(guess);
+            updateWord();
+            if (correctGuesses.length === new Set(word.split('')).size) {
+              boxElement.textContent = 'You win!';
+              formElement.style.display = 'none';
+              playElement.style.display = 'block';
+            }
+          } else {
+            wrongGuesses++;
+            updateBox();
+            if (wrongGuesses >= loseMessage.length) {
+              formElement.style.display = 'none';
+              playElement.style.display = 'block';
+            }
+          }
+          guessElement.value = '';
+        }
+      });
+
+
+      playElement.addEventListener('click', () => {
+      word = words[Math.floor(Math.random() * words.length)];
+      correctGuesses.length = 0;
+      wrongGuesses = 0;
+      boxElement.textContent = '';
+      updateWord();
+      formElement.style.display = 'block';
+      playElement.style.display = 'none';
+      });
+
+      function updateWord() {
+      let displayWord = '';
+      for (const char of word) {
+        if (correctGuesses.includes(char)) {
+          displayWord += char;
+        } else {
+          displayWord += '_';
+        }
+      }
+      wordElement.textContent = displayWord;
+      }
+      function updateBox() {
+        boxElement.innerHTML = '';
+        for (let i = 0; i < wrongGuesses; i++) {
+          const span = document.createElement('span');
+          // For each wrong guess, a new span element is created using the document.createElement method. 
+          span.textContent = loseMessage[i];
+          //textContent property of this span element is set to the corresponding character in the loseMessage string, which contains the “YOU LOST” message. 
+          boxElement.appendChild(span);
+          //The span element is then appended to the boxElement using the appendChild method.
+          // Redirect to the gameover.html page when the game is over
+          if (loseMessage[i] === loseMessage[loseMessage.length - 1]) {
+            window.location.href = "gameover.html";
+          }
+        }
+      }
+      // example for updateBox function, if the player has made 3 wrong guesses, the updateBox function will clear the contents of the boxElement and then display the first 3 characters of the “YOU LOST” message: “YOU”. If the player makes another wrong guess, the function will clear the contents of the boxElement again and then display the first 4 characters of the “YOU LOST” message: "YOU ". And so on, until either all characters of the “YOU LOST” message have been displayed or the player correctly guesses the word.
+      playElement.click();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            text-align: center;
+            background-image: url('https://i.imgur.com/fPY7fK7_d.webp?maxwidth=520&shape=thumb&fidelity=high');
+            background-size: cover;
+        }
+        .game-over {
+            font-size: 80px;
+            color: white;
+            text-shadow: 3px 3px black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .restart-btn {
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            bottom: 250px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .restart-btn:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-over">Game Over!</div>
+    <button class="restart-btn" onclick="restartGame()">Restart Game</button>
+
+    <script>
+        function restartGame() {
+            // Open the game.html file to restart the game
+            window.location.href = "play.html";
+        }
+    </script>
+</body>
+</html>

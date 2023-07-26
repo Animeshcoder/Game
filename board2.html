@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Board Game</title>
+    <style>
+                body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+          }
+          
+          #game-board {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            background-color: #f0e68c;
+          }
+          
+          .cell {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #7c7171;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          button {
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+          }
+
+          button:hover {
+            background-color: #3e8e41;
+          }
+
+          
+    </style>
+  </head>
+  <body>
+    <h1>Board Game</h1>
+    <div id="game-board">
+    </div>
+    <div>
+        <button onclick="rollDice()">Roll Dice</button>
+        <p>Dice Value: <span id="dice-value"></span></p>
+    </div>
+    <script>
+        const gameBoard = document.querySelector('#game-board');
+        const imageUrl = 'https://picsum.photos/50';
+        let currentPosition = 0;
+        const gameOverCells = generateRandomNumbers(7, 1, 99);
+        
+        for (let i = 0; i < 100; i++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          cell.textContent = i + 1;
+          
+          if (gameOverCells.includes(i)) {
+            cell.style.backgroundColor = 'red';
+          }
+          
+          gameBoard.appendChild(cell);
+        }
+        
+        const cells = document.querySelectorAll('.cell');
+        cells[currentPosition].style.backgroundImage = `url('${imageUrl}')`;
+        
+        function rollDice() {
+          const diceValue = Math.floor(Math.random() * 6) + 1;
+          document.querySelector('#dice-value').textContent = diceValue;
+          
+          cells[currentPosition].style.backgroundImage = '';
+          
+          currentPosition += diceValue;
+          
+          if (currentPosition >= cells.length) {
+            alert('You win!');
+            resetGame();
+            return;
+          }
+          
+          if (gameOverCells.includes(currentPosition)) {
+            alert('Game over!');
+            resetGame();
+            return;
+          }
+          
+          cells[currentPosition].style.backgroundImage = `url('${imageUrl}')`;
+        }
+        
+        function resetGame() {
+          window.location.href = 'gameover.html';
+        }
+        
+        function generateRandomNumbers(count, min, max) {
+            const numbers = [];
+            
+            while (numbers.length < count) {
+                const number = Math.floor(Math.random() * (max - min + 1)) + min;
+                
+                if (!numbers.includes(number)) {
+                    numbers.push(number);
+                }
+            }
+            
+            return numbers;
+        }
+        
+      </script>
+      
+  </body>
+</html>
+
